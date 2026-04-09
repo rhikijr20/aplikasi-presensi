@@ -1,0 +1,324 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <title>
+         Jadwal Page
+        </title>
+        <script src="https://cdn.tailwindcss.com">
+        </script>
+        <!-- External CSS library for font awesome icons -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+
+        <!-- External CSS for importing the 'Roboto' font -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+
+        <!-- Internal CSS styling for the page -->
+        <style>
+            /* General body styles: set font, remove margins/padding, set background color, and prevent scrolling */
+            body {
+                font-family: 'Roboto', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f5f5f5;
+                overflow: hidden; /* Prevent page scrolling */
+            }
+
+            /* Header styling: background color, text styles, and padding */
+            .header {
+                background-color: #1a2a44;
+                color: white;
+                padding: 20px;
+                text-align: center;
+                position: relative;
+            }
+
+            /* Styling for the school logo in the header */
+            .header img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                position: absolute;
+                left: 20px;
+                top: 20px;
+            }
+
+            /* Styling for the title text in the header */
+            .header .title {
+                font-size: 18px;
+                font-weight: 500;
+            }
+
+            /* Styling for the subtitle (school name) in the header */
+            .header .subtitle {
+                font-size: 14px;
+                font-weight: 400;
+            }
+
+            /* Position and styling for the logout icon in the header */
+            .header .icon {
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                font-size: 24px;
+            }
+
+            /* Content area styling */
+            .content {
+                padding: 20px;
+                height: calc(100vh - 80px); /* Adjust height to fit within the viewport */
+                overflow: auto; /* Enable scrolling for the content */
+            }
+
+            /* Schedule container styling: background color, border radius, padding, and margin */
+            .schedule-container {
+                background-color: #1a2a44;
+                border-radius: 10px;
+                padding: 20px;
+                color: white;
+                margin-top: 20px; /* Make the schedule box position lower */
+            }
+
+            /* Styling for the header of the schedule container */
+            .schedule-container h2 {
+                margin-top: 0;
+            }
+
+            /* Schedule area: add margin, set max height and enable vertical scrolling */
+            .schedule {
+                margin-top: 20px;
+                max-height: 400px; /* Set a max height for the schedule */
+                overflow-y: auto; /* Enable vertical scrolling */
+            }
+
+            /* Customize the scrollbar for the schedule area */
+            .schedule::-webkit-scrollbar {
+                width: 8px; /* Slimmer scrollbar width */
+            }
+
+            /* Styling for the scrollbar thumb */
+            .schedule::-webkit-scrollbar-thumb {
+                background-color: #888; /* Scrollbar thumb color */
+                border-radius: 10px; /* Rounded scrollbar thumb */
+            }
+
+            /* Styling for the scrollbar track */
+            .schedule::-webkit-scrollbar-track {
+                background-color: transparent; /* Scrollbar track color */
+            }
+
+            /* Individual schedule item styling: background, padding, margin, shadow, and layout */
+            .schedule-item {
+                background-color: white;
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                color: #192f46;
+            }
+
+            /* Subject column within the schedule item */
+            .schedule-item .subject {
+                font-weight: 500;
+                text-align: left;
+                flex: 1;
+            }
+
+            /* Styling for the teacher name under each subject */
+            .schedule-item .teacher {
+                font-weight: normal; /* Make teacher names not bold */
+            }
+
+            /* Time column within the schedule item */
+            .schedule-item .time {
+                text-align: center;
+                flex: 1;
+            }
+
+            /* Styling for the 'Waktu' label */
+            .schedule-item .time div:first-child {
+                font-weight: normal; /* Make 'Waktu' not bold */
+            }
+
+            /* Day column within the schedule item */
+            .schedule-item .day {
+                text-align: right;
+                flex: 1;
+            }
+
+            /* Styling for the 'Hari' label */
+            .schedule-item .day div:first-child {
+                font-weight: normal; /* Make 'Hari' not bold */
+            }
+
+            /* Footer styling: background, padding, layout, and shadow */
+            .footer {
+                background-color: white;
+                padding: 10px 0;
+                position: fixed;
+                bottom: 0; /* Adjusted to make it at the bottom */
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+                box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Styling for individual items in the footer */
+            .footer .footer-item {
+                text-align: center;
+                color: #1a2a44;
+                position: relative;
+                flex: 1; /* Make each footer item take equal space */
+            }
+
+            /* Icon styling for footer items */
+            .footer .footer-item i {
+                display: block;
+                font-size: 24px; /* Made the icons bigger */
+            }
+
+            /* Text styling for footer items */
+            .footer .footer-item div {
+                font-size: 12px; /* Adjusted text size to match icon size */
+                margin-top: 10px; /* Made the position lower */
+            }
+
+            /* Highlight styling for the active footer item */
+            .footer .footer-item.active {
+                color: #1a2a44;
+            }
+
+            /* Styling for the presence logo in the center of the footer */
+            .footer .presence-logo {
+                position: absolute;
+                top: -30px; /* Moved up a little */
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #1a2a44;
+                border-radius: 50%;
+                padding: 15px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+
+            /* Styling for the camera icon inside the presence logo */
+            .footer .presence-logo i {
+                font-size: 24px; /* Made the icon bigger */
+                color: white;
+            }
+
+            /* Styling for the text under the presence logo */
+            .footer .presence-logo-text {
+                margin-top: 40px; /* Adjusted to position the text a little higher */
+                font-size: 12px; /* Adjusted text size to match icon size */
+                color: #1a2a44; /* Match the text color with the footer item color */
+            }
+
+            /* Change color of the calendar icon in the footer */
+            .footer .calendar-icon {
+                color: #306194; /* Changed calendar icon color */
+            }
+        </style>
+    </head>
+    <body class="bg-gray-100 font-roboto">
+        <div class="bg-[#192f46] text-white p-4">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center space-x-2">
+                <img src="/img/logo smkn 3 cimahi.png" alt="School Logo" class="w-12 h-12 rounded-full" width="40" height="40" />
+              </div>
+              <div class="flex-1 text-center">
+                <div class="text-xl font-bold">Presensi Online</div>
+                <div class="text-lg">SMK Negeri 3 Cimahi</div>
+              </div>
+        
+              <!-- Tombol logout Start -->
+              <div class="flex items-center space-x-2">
+                <a href="/guru/login/" class="text-2xl" title="Logout">
+                  <i class="fas fa-sign-out-alt"></i>
+                </a>
+              </div>      
+              <!-- Tombol logout End -->
+              
+            </div>
+        </div>
+
+        <!-- Main content area for displaying the schedule -->
+        <div class="content">
+            <!-- Schedule container -->
+            <div class="schedule-container">
+                <h2>Jadwal Minggu Ini :</h2>
+                <div class="schedule">
+                    <!-- Individual schedule items -->
+                    <div class="schedule-item">
+                        <div class="subject">12 DKV I<br/>
+                            <span class="teacher">Ibu Mutiara</span>
+                        </div>
+                        <div class="time">
+                            <div style="font-weight: normal;">Waktu</div>
+                            <div>07.00</div>
+                        </div>
+                        <div class="day">
+                            <div style="font-weight: normal;">Hari</div>
+                            <div>Senin</div>
+                        </div>
+                    </div>
+                    <div class="schedule-item">
+                        <div class="subject">12 DKV II<br/>
+                            <span class="teacher">Bapak Wawan</span>
+                        </div>
+                        <div class="time">
+                            <div style="font-weight: normal;">Waktu</div>
+                            <div>10.00</div>
+                        </div>
+                        <div class="day">
+                            <div style="font-weight: normal;">Hari</div>
+                            <div>Senin</div>
+                        </div>
+                    </div>
+                    <!-- Additional schedule items are omitted for brevity -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Navbar Start -->
+        <div class="footer">
+            <div class="footer-item">
+            <a href="/guru/dashboard/" class="flex flex-col items-center">
+                <i class="fas fa-home home-icon"></i>
+                <div>Dashboard</div>
+            </a>
+            </div>
+            <div class="footer-item">
+            <a href="/guru/jadwal/" class="flex flex-col items-center">
+                <i class="fas fa-calendar-alt calendar-icon"></i>
+                <div>Jadwal</div>
+            </a>
+            </div>
+            <div class="footer-item active">
+            <a href="/guru/cek-presensi/" class="flex flex-col items-center">
+                <div class="presence-logo">
+                <i class="fas fa-users"></i>
+                </div>
+                <div class="presence-logo-text" style="margin-top: 40px;"> Cek Presensi</div>
+            </a>
+            </div>
+            <div class="footer-item">
+            <a href="/guru/akun/" class="flex flex-col items-center">
+                <i class="fas fa-user"></i>
+                <div>Akun</div>
+            </a>
+            </div>
+            <div class="footer-item">
+            <a href="/guru/surat-masuk/" class="flex flex-col items-center">
+                <i class="fas fa-envelope"></i>
+                <div>Surat Masuk</div>
+            </a>
+            </div>
+        </div>
+        <!-- Navbar End -->
+
+    </body>
+</html>
